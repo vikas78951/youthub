@@ -46,7 +46,7 @@ export default function OTPScreen() {
   }, [timer]);
 
   const onSubmit = () => {
-    router.replace("/(employee)");
+    router.replace("/select-role");
   };
 
   return (
