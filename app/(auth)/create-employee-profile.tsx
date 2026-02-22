@@ -1,12 +1,18 @@
+import AuthWrapper from "@/features/auth/components/AuthWrapper";
+import { styles } from "@/features/auth/style";
+import GoBackIconButton from "@/shared/ui/GoBackIconButton";
+import Header from "@/shared/ui/Header";
+import { useThemes } from "@/theme/use-color-scheme.web";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { Button, Card, Text, TextInput, useTheme } from "react-native-paper";
+import { KeyboardAvoidingView, ScrollView, View } from "react-native";
+import { Button, Text, TextInput } from "react-native-paper";
 import { createEmployeeProfileSchema } from "../../features/profile/schema";
 
 export default function EmployeeCreateProfile() {
-  const theme = useTheme();
+  const theme = useThemes();
 
   const {
     control,
@@ -15,138 +21,160 @@ export default function EmployeeCreateProfile() {
   } = useForm({
     resolver: zodResolver(createEmployeeProfileSchema),
     defaultValues: {
-      experience: 0,
+      experience: "0",
     },
   });
 
   const onSubmit = (data: any) => {
+    router.push("/(employee)");
     console.log(data);
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: theme.colors.background }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <Text
-          variant="headlineMedium"
-          style={{ fontWeight: "700", marginBottom: 24 }}
-        >
-          Create Your Profile
-        </Text>
-
-        <Card style={{ padding: 20, borderRadius: 20 }}>
-          {/* FULL NAME */}
-          <Text variant="labelLarge">Full Name *</Text>
-          <Controller
-            control={control}
-            name="fullName"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                mode="outlined"
-                placeholder="Your full name"
-                value={value}
-                onChangeText={onChange}
-                error={!!errors.fullName}
-                style={{ marginTop: 6 }}
+    <AuthWrapper>
+      <GoBackIconButton />
+      <View
+        style={{ ...styles.form, justifyContent: "flex-start", marginTop: 20 }}
+      >
+        <KeyboardAvoidingView>
+          <ScrollView>
+            {/* Main Content */}
+            <Header 
+              style={{
+                marginBottom: 20,
+              }}
+              title="Add your basic Details."
+            />
+            <View
+              style={{
+                padding: 24,
+                borderRadius: theme.shape.radiusLG,
+                borderWidth: 1,
+                borderColor: theme.colors.outlineVariant,
+              }}
+            >
+              {/* FULL NAME */}
+              <Text variant="labelLarge">Full Name *</Text>
+              <Controller
+                control={control}
+                name="fullName"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    mode="outlined"
+                    placeholder="Your full name"
+                    value={value}
+                    onChangeText={onChange}
+                    error={!!errors.fullName}
+                    style={{ marginTop: 6, height: 48 }}
+                  />
+                )}
               />
-            )}
-          />
 
-          {/* CITY */}
-          <Text style={{ marginTop: 16 }}>City *</Text>
-          <Controller
-            control={control}
-            name="city"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                mode="outlined"
-                placeholder="Delhi, Mumbai..."
-                value={value}
-                onChangeText={onChange}
-                error={!!errors.city}
+              {/* CITY */}
+              <Text style={{ marginTop: 16 }}>City *</Text>
+              <Controller
+                control={control}
+                name="city"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    mode="outlined"
+                    placeholder="Delhi, Mumbai..."
+                    value={value}
+                    onChangeText={onChange}
+                    error={!!errors.city}
+                    style={{ marginTop: 6, height: 48 }}
+                  />
+                )}
               />
-            )}
-          />
 
-          {/* JOB TITLE */}
-          <Text style={{ marginTop: 16 }}>Job Title *</Text>
-          <Controller
-            control={control}
-            name="jobTitle"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                mode="outlined"
-                placeholder="Software Developer"
-                value={value}
-                onChangeText={onChange}
-                error={!!errors.jobTitle}
+              {/* JOB TITLE */}
+              <Text style={{ marginTop: 16 }}>Job Title *</Text>
+              <Controller
+                control={control}
+                name="jobTitle"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    mode="outlined"
+                    placeholder="Software Developer"
+                    value={value}
+                    onChangeText={onChange}
+                    error={!!errors.jobTitle}
+                    style={{ marginTop: 6, height: 48 }}
+                  />
+                )}
               />
-            )}
-          />
 
-          {/* EXPERIENCE */}
-          <Text style={{ marginTop: 16 }}>Years of Experience *</Text>
-          <Controller
-            control={control}
-            name="experience"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                mode="outlined"
-                keyboardType="numeric"
-                placeholder="2"
-                value={String(value)}
-                onChangeText={(text) => onChange(Number(text))}
-                error={!!errors.experience}
+              {/* EXPERIENCE */}
+              <Text style={{ marginTop: 16 }}>Years of Experience *</Text>
+              <Controller
+                control={control}
+                name="experience"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    mode="outlined"
+                    keyboardType="numeric"
+                    placeholder="2"
+                    value={value ?? ""}
+                    onChangeText={onChange}
+                    error={!!errors.experience}
+                    style={{ marginTop: 6, height: 48 }}
+                  />
+                )}
               />
-            )}
-          />
 
-          {/* SKILLS */}
-          <Text style={{ marginTop: 16 }}>Skills *</Text>
-          <Controller
-            control={control}
-            name="skills"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                mode="outlined"
-                multiline
-                placeholder="React, Node, SQL"
-                value={value}
-                onChangeText={onChange}
-                error={!!errors.skills}
+              {/* SKILLS */}
+              <Text style={{ marginTop: 16 }}>Skills *</Text>
+              <Controller
+                control={control}
+                name="skills"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    mode="outlined"
+                    placeholder="React, Node, SQL"
+                    value={value}
+                    onChangeText={onChange}
+                    error={!!errors.skills}
+                    style={{ marginTop: 6, height: 48 }}
+                  />
+                )}
               />
-            )}
-          />
 
-          {/* EXPECTED SALARY */}
-          <Text style={{ marginTop: 16 }}>Expected Salary (Optional)</Text>
-          <Controller
-            control={control}
-            name="expectedSalary"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                mode="outlined"
-                keyboardType="numeric"
-                placeholder="500000"
-                value={value ? String(value) : ""}
-                onChangeText={(text) =>
-                  onChange(text ? Number(text) : undefined)
-                }
+              {/* EXPECTED SALARY */}
+              <Text style={{ marginTop: 16 }}>Expected Salary (Optional)</Text>
+              <Controller
+                control={control}
+                name="expectedSalary"
+                render={({ field: { onChange, value } }) => (
+                  <TextInput
+                    mode="outlined"
+                    keyboardType="numeric"
+                    placeholder="500000"
+                    value={value ? String(value) : ""}
+                    onChangeText={(text) =>
+                      onChange(text ? Number(text) : undefined)
+                    }
+                    style={{ marginTop: 6, height: 48 }}
+                  />
+                )}
               />
-            )}
-          />
 
-          <Button
-            mode="contained"
-            onPress={handleSubmit(onSubmit)}
-            style={{ marginTop: 30 }}
-          >
-            Save & Continue
-          </Button>
-        </Card>
-      </ScrollView>
-    </KeyboardAvoidingView>
+              <Button
+                mode="contained"
+                onPress={handleSubmit(onSubmit)}
+                style={{
+                  marginTop: 24,
+                  borderRadius: 12,
+                  height: 48,
+                  justifyContent: "center",
+                }}
+                labelStyle={{ fontWeight: "600" }}
+              >
+                Save & Continue
+              </Button>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </AuthWrapper>
   );
 }

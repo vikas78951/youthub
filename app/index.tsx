@@ -7,5 +7,5 @@ export default function Index() {
     return <Redirect href="/(employee)" />;
   }
 
-  return <Redirect href="/(auth)/number" />;
+  return <Redirect href="/(auth)/email" />;
 }

@@ -15,3 +15,11 @@ export const otpSchema = z.object({
     .max(4, "OTP must be 4 digits")
     .regex(/^[0-9]+$/, "Only numbers allowed"),
 });
+
+
+export const emailSchema = z.object({
+  email : z
+  .string()
+  .min(1, "Email is required")
+  .email("Please enter a valid email address"),
+})

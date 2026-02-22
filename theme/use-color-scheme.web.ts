@@ -1,9 +1,8 @@
+import type { AppTheme } from "@/theme/type";
 import { useEffect, useState } from "react";
 import { useColorScheme as useRNColorScheme } from "react-native";
+import { useTheme } from "react-native-paper";
 
-/**
- * To support static rendering, this value needs to be re-calculated on the client side for web
- */
 export function useColorScheme() {
   const [hasHydrated, setHasHydrated] = useState(false);
 
@@ -19,3 +18,5 @@ export function useColorScheme() {
 
   return "light";
 }
+
+export const useThemes = () => useTheme<AppTheme>();

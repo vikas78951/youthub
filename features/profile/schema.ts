@@ -74,10 +74,10 @@ export const createEmployeeProfileSchema = z.object({
   jobTitle: z.string().min(2, "Job title is required"),
 
   experience: z
-    .number({
-      error: "Experience is required",
-    })
-    .negative({ error: "Experience cannot be negative" }),
+    .string()
+    .min(1, "Experience is required")
+    .regex(/^\d+$/, "Only numbers allowed")
+    .transform((val) => Number(val)),
 
   skills: z.string().min(2, "At least one skill is required"),
 

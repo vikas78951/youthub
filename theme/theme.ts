@@ -1,11 +1,10 @@
-import type { MD3Theme } from "react-native-paper";
 import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
-import { semanticDark, semanticLight } from "./semantic";
+import { semanticDark, semanticLight, shadow, shape } from "./semantic";
+import { AppTheme } from "./type";
 import { typography } from "./typography";
-
 const primaryMain = "#002b4e";
 
-export const LightTheme: MD3Theme = {
+export const LightTheme: AppTheme = {
   ...MD3LightTheme,
   roundness: 12,
   colors: {
@@ -64,9 +63,11 @@ export const LightTheme: MD3Theme = {
     backdrop: "rgba(0,0,0,0.4)",
   },
   fonts: typography,
+  shadow,
+  shape,
 };
 
-export const DarkTheme: MD3Theme = {
+export const DarkTheme: AppTheme = {
   ...MD3DarkTheme,
   roundness: 12,
   colors: {
@@ -108,7 +109,6 @@ export const DarkTheme: MD3Theme = {
     inverseOnSurface: "#141A21",
     inversePrimary: primaryMain,
 
-    shadow: "#000000",
     scrim: "#000000",
 
     elevation: {
@@ -125,4 +125,6 @@ export const DarkTheme: MD3Theme = {
     backdrop: "rgba(0,0,0,0.5)",
   },
   fonts: typography,
+  shadow,
+  shape,
 };

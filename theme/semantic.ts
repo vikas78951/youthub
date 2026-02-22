@@ -1,4 +1,5 @@
 import "react-native-paper";
+import { createShadow } from "./utility";
 
 export const semanticLight = {
   success: "#1E8E3E",
@@ -55,3 +56,18 @@ declare module "react-native-paper" {
     errorContainer: string;
   }
 }
+
+export const shape = {
+  radiusXS: 6,
+  radiusSM: 10,
+  radiusMD: 14,
+  radiusLG: 20,
+  radiusXL: 28,
+};
+export const shadow = {
+  level0: createShadow(0),
+  level1: createShadow(2),
+  level2: createShadow(4),
+  level3: createShadow(8),
+  level4: createShadow(16),
+};

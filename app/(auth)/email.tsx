@@ -8,17 +8,18 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { KeyboardAvoidingView, View } from "react-native";
 import { Button, Text, TextInput } from "react-native-paper";
-import { phoneSchema } from "../../features/auth/schema";
+import { emailSchema } from "../../features/auth/schema";
 
-export default function PhoneScreen() {
+export default function EmailScreen() {
   const router = useRouter();
   const theme = useThemes();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(phoneSchema),
+    resolver: zodResolver(emailSchema),
   });
 
   const onSubmit = () => {
@@ -28,7 +29,9 @@ export default function PhoneScreen() {
   return (
     <AuthWrapper>
       <View style={styles.form}>
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView behavior="padding">
+          {/* Title */}
+
           <Header
             style={{
               marginBottom: 40,
@@ -36,10 +39,11 @@ export default function PhoneScreen() {
             title="Login to your account."
             description="One Platform. Two Goals. Jobs & Talent."
           />
+
           {/* Card */}
           <View
             style={{
-              padding: 24,
+              padding: 16,
               borderRadius: theme.shape.radiusLG,
               borderWidth: 1,
               borderColor: theme.colors.outlineVariant,
@@ -49,28 +53,30 @@ export default function PhoneScreen() {
               variant="bodyMedium"
               style={{ marginBottom: 12, opacity: 0.7 }}
             >
-              Enter your number to continue
+              Enter your email address to continue
             </Text>
 
             <Controller
               control={control}
-              name="phone"
+              name="email"
               defaultValue=""
               render={({ field: { onChange, value } }) => (
                 <TextInput
-                  label="Mobile Number"
+                  label="Email Address"
                   mode="outlined"
-                  keyboardType="number-pad"
-                  value={value || "9876543210"}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={value}
                   onChangeText={onChange}
-                  error={!!errors.phone}
+                  error={!!errors.email}
                   outlineStyle={{ borderRadius: 12 }}
-                  left={<TextInput.Affix text="+91" />}
+                  left={<TextInput.Icon icon="email-outline" />}
                 />
               )}
             />
 
-            {errors.phone && (
+            {errors.email && (
               <Text
                 style={{
                   color: theme.colors.error,
@@ -78,7 +84,7 @@ export default function PhoneScreen() {
                   fontSize: 12,
                 }}
               >
-                {errors.phone.message}
+                {errors.email.message}
               </Text>
             )}
 
@@ -93,7 +99,7 @@ export default function PhoneScreen() {
               }}
               labelStyle={{ fontWeight: "600" }}
             >
-              Get Started
+              Continue
             </Button>
           </View>
 
