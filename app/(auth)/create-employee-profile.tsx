@@ -1,5 +1,6 @@
 import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import { styles } from "@/features/auth/style";
+import { Card } from "@/shared/ui/Card";
 import GoBackIconButton from "@/shared/ui/GoBackIconButton";
 import Header from "@/shared/ui/Header";
 import { useThemes } from "@/theme/use-color-scheme.web";
@@ -33,26 +34,26 @@ export default function EmployeeCreateProfile() {
   return (
     <AuthWrapper>
       <GoBackIconButton />
-      <View
-        style={{ ...styles.form, justifyContent: "flex-start", marginTop: 20 }}
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
       >
-        <KeyboardAvoidingView>
-          <ScrollView>
+        <View
+          style={{
+            ...styles.form,
+            justifyContent: "flex-start",
+            marginTop: 20,
+          }}
+        >
+          <KeyboardAvoidingView>
             {/* Main Content */}
-            <Header 
+            <Header
               style={{
                 marginBottom: 20,
               }}
-              title="Add your basic Details."
+              title="Create your profile."
             />
-            <View
-              style={{
-                padding: 24,
-                borderRadius: theme.shape.radiusLG,
-                borderWidth: 1,
-                borderColor: theme.colors.outlineVariant,
-              }}
-            >
+            <Card>
               {/* FULL NAME */}
               <Text variant="labelLarge">Full Name *</Text>
               <Controller
@@ -66,6 +67,8 @@ export default function EmployeeCreateProfile() {
                     onChangeText={onChange}
                     error={!!errors.fullName}
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="Full Name"
+                    accessibilityHint="Enter your full name"
                   />
                 )}
               />
@@ -83,6 +86,7 @@ export default function EmployeeCreateProfile() {
                     onChangeText={onChange}
                     error={!!errors.city}
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="City"
                   />
                 )}
               />
@@ -100,6 +104,7 @@ export default function EmployeeCreateProfile() {
                     onChangeText={onChange}
                     error={!!errors.jobTitle}
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="Job Title"
                   />
                 )}
               />
@@ -118,6 +123,7 @@ export default function EmployeeCreateProfile() {
                     onChangeText={onChange}
                     error={!!errors.experience}
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="Years of Experience"
                   />
                 )}
               />
@@ -135,6 +141,7 @@ export default function EmployeeCreateProfile() {
                     onChangeText={onChange}
                     error={!!errors.skills}
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="Skills"
                   />
                 )}
               />
@@ -154,6 +161,7 @@ export default function EmployeeCreateProfile() {
                       onChange(text ? Number(text) : undefined)
                     }
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="Expected Salary"
                   />
                 )}
               />
@@ -168,13 +176,15 @@ export default function EmployeeCreateProfile() {
                   justifyContent: "center",
                 }}
                 labelStyle={{ fontWeight: "600" }}
+                accessibilityRole="button"
+                accessibilityLabel="Save and continue"
               >
                 Save & Continue
               </Button>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+            </Card>
+          </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </AuthWrapper>
   );
 }

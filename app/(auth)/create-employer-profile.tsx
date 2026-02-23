@@ -1,5 +1,6 @@
 import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import { styles } from "@/features/auth/style";
+import { Card } from "@/shared/ui/Card";
 import GoBackIconButton from "@/shared/ui/GoBackIconButton";
 import Header from "@/shared/ui/Header";
 import { useThemes } from "@/theme/use-color-scheme.web";
@@ -48,26 +49,22 @@ export default function EmployerCreateProfile() {
     <AuthWrapper>
       <GoBackIconButton />
 
-      <View style={{ ...styles.form, justifyContent: "flex-start" }}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-          <ScrollView>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={{ ...styles.form, justifyContent: "flex-start" }}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+          >
             <Header
               style={{
-                marginBottom: 20,
+                marginBottom: 40,
                 flex: 1,
               }}
-              title="Create basic profile."
+              title="Create your profile."
             />
-            <View
-              style={{
-                padding: 24,
-                borderRadius: theme.shape.radiusLG,
-                borderWidth: 1,
-                borderColor: theme.colors.outlineVariant,
-              }}
-            >
+            <Card description="fill you details">
               {/* FULL NAME */}
               <Text variant="labelLarge">Full Name *</Text>
               <Controller
@@ -81,6 +78,8 @@ export default function EmployerCreateProfile() {
                     onChangeText={onChange}
                     error={!!errors.fullName}
                     style={{ marginTop: 6, height: 48 }}
+                    accessibilityLabel="Full Name"
+                    accessibilityHint="Enter your first and last name"
                   />
                 )}
               />
@@ -110,6 +109,9 @@ export default function EmployerCreateProfile() {
                       onPress={() => setValue("hiringFor", item.value)}
                       style={{ borderRadius: 999 }}
                       labelStyle={{ fontSize: 13 }}
+                      accessibilityRole="button"
+                      accessibilityLabel={item.label}
+                      accessibilityState={{ selected: isActive }}
                     >
                       {item.label}
                     </Button>
@@ -137,6 +139,7 @@ export default function EmployerCreateProfile() {
                         value={value}
                         onChangeText={onChange}
                         style={{ marginTop: 6, height: 48 }}
+                        accessibilityLabel="Company Name"
                       />
                     )}
                   />
@@ -152,6 +155,7 @@ export default function EmployerCreateProfile() {
                         value={value}
                         onChangeText={onChange}
                         style={{ marginTop: 6, height: 48 }}
+                        accessibilityLabel="Company City"
                       />
                     )}
                   />
@@ -167,6 +171,7 @@ export default function EmployerCreateProfile() {
                         value={value}
                         onChangeText={onChange}
                         style={{ marginTop: 6, height: 48 }}
+                        accessibilityLabel="Company Address"
                       />
                     )}
                   />
@@ -193,6 +198,7 @@ export default function EmployerCreateProfile() {
                         value={value}
                         onChangeText={onChange}
                         style={{ marginTop: 6, height: 48 }}
+                        accessibilityLabel="Client Name"
                       />
                     )}
                   />
@@ -208,6 +214,7 @@ export default function EmployerCreateProfile() {
                         value={value}
                         onChangeText={onChange}
                         style={{ marginTop: 6, height: 48 }}
+                        accessibilityLabel="Interview Address"
                       />
                     )}
                   />
@@ -218,13 +225,15 @@ export default function EmployerCreateProfile() {
                 mode="contained"
                 onPress={handleSubmit(onSubmit)}
                 style={{ marginTop: 30 }}
+                accessibilityRole="button"
+                accessibilityLabel="Go to next step"
               >
                 Next
               </Button>
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </View>
+            </Card>
+          </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </AuthWrapper>
   );
 }

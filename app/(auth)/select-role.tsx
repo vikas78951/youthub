@@ -60,7 +60,7 @@ export function SelectRoleScreen() {
           <KeyboardAvoidingView>
             <View>
               <Header
-                style={{ marginBottom: 20 }}
+                style={{ marginBottom: 40 }}
                 title="Choose your role"
                 description="We’ll tailor your experience based on your selection."
               />
