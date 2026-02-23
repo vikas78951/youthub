@@ -43,22 +43,7 @@ export default function EmailScreen() {
           />
 
           {/* Card */}
-          <Card
-            style={{
-              padding: 16,
-              borderRadius: theme.shape.radiusLG,
-              borderWidth: 1,
-              borderColor: theme.colors.outlineVariant,
-              boxShadow: "none",
-            }}
-          >
-            <Text
-              variant="bodyMedium"
-              style={{ marginBottom: 12, opacity: 0.7 }}
-            >
-              Enter your email address to continue
-            </Text>
-
+          <Card description={"Enter your email address to continue"}>
             <Controller
               control={control}
               name="email"

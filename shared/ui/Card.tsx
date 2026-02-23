@@ -1,13 +1,21 @@
 import { useThemes } from "@/theme/use-color-scheme.web";
 import React from "react";
 import { View } from "react-native";
+import { Text } from "react-native-paper";
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   style?: Record<string, unknown>;
+  title?: React.ReactNode;
+  description?: React.ReactNode;
 }
 
-export const Card: React.FC<Props> = ({ children, style }) => {
+export const Card: React.FC<Props> = ({
+  children,
+  style,
+  title,
+  description,
+}) => {
   const theme = useThemes();
 
   return (
@@ -21,6 +29,21 @@ export const Card: React.FC<Props> = ({ children, style }) => {
         ...(style as object),
       }}
     >
+      {title && (
+        <Text
+          variant="headlineMedium"
+          style={{ marginBottom: 4, opacity: 0.8 }}
+        >
+          {title}
+        </Text>
+      )}
+
+      {description && (
+        <Text variant="bodyMedium" style={{ marginBottom: 20, opacity: 0.7 }}>
+          {description}
+        </Text>
+      )}
+
       {children}
     </View>
   );

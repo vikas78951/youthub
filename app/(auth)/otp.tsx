@@ -1,8 +1,8 @@
 import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import { styles } from "@/features/auth/style";
-import { useResponsive } from "@/hooks/useResponsive";
-import GoBackIconButton from "@/shared/ui/GoBackIconButton";
+import { Card } from "@/shared/ui/Card";
 import { Disclaimer } from "@/shared/ui/Disclaimer";
+import GoBackIconButton from "@/shared/ui/GoBackIconButton";
 import Header from "@/shared/ui/Header";
 import { useThemes } from "@/theme/use-color-scheme.web";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,7 +26,6 @@ export default function OTPScreen() {
   const theme = useThemes();
   const [value, setValue] = useState("");
   const [timer, setTimer] = useState(30);
-  const { isDesktop } = useResponsive();
 
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -53,12 +52,13 @@ export default function OTPScreen() {
   }, [timer]);
 
   const onSubmit = () => {
-    router.replace("/select-role");
+    router.push("/select-role");
   };
 
   return (
     <AuthWrapper>
-      {!isDesktop && <GoBackIconButton />}
+      <GoBackIconButton />
+
       <View style={styles.form}>
         <KeyboardAvoidingView>
           {/* Main Content */}
@@ -70,21 +70,7 @@ export default function OTPScreen() {
             description="Verify you account"
           />
           {/* Card */}
-          <View
-            style={{
-              padding: 24,
-              borderRadius: theme.shape.radiusLG,
-              borderWidth: 1,
-              borderColor: theme.colors.outlineVariant,
-            }}
-          >
-            <Text
-              variant="bodyMedium"
-              style={{ marginBottom: 20, opacity: 0.7 }}
-            >
-              Enter the 4-digit code sent to your phone
-            </Text>
-
+          <Card description="Enter the 4-digit code sent to your phone">
             {/* OTP FIELD */}
             <CodeField
               ref={ref}
@@ -97,6 +83,9 @@ export default function OTPScreen() {
               rootStyle={{
                 justifyContent: "space-between",
               }}
+              accessible
+              accessibilityLabel="One-time password input"
+              accessibilityHint="Enter the 4-digit code you received"
               renderCell={({ index, symbol, isFocused }) => (
                 <View
                   key={index}
@@ -113,6 +102,8 @@ export default function OTPScreen() {
                     justifyContent: "center",
                     backgroundColor: theme.colors.surface,
                   }}
+                  accessible
+                  accessibilityLabel={`Digit ${index + 1} of ${CELL_COUNT}`}
                 >
                   <Text
                     style={{
@@ -144,6 +135,7 @@ export default function OTPScreen() {
                 opacity: 0.6,
                 textAlign: "center",
               }}
+              accessibilityLabel={`Resend OTP in ${timer} seconds`}
             >
               Resend OTP in 00:{timer.toString().padStart(2, "0")}
             </Text>
@@ -159,13 +151,17 @@ export default function OTPScreen() {
                 justifyContent: "center",
               }}
               labelStyle={{ fontWeight: "600" }}
+              accessibilityRole="button"
+              accessibilityLabel="Verify"
+              accessibilityHint="Submits the one-time password and continues to role selection"
+              accessibilityState={{ disabled: value.length !== 4 }}
             >
               Verify
             </Button>
-          </View>
+          </Card>
 
           {/* Disclaimer */}
-          <Disclaimer style={{marginTop:30}} />
+          <Disclaimer style={{ marginTop: 30 }} />
         </KeyboardAvoidingView>
       </View>
     </AuthWrapper>
