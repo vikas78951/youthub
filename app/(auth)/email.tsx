@@ -1,5 +1,7 @@
 import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import { styles } from "@/features/auth/style";
+import { Card } from "@/shared/ui/Card";
+import { Disclaimer } from "@/shared/ui/Disclaimer";
 import Header from "@/shared/ui/Header";
 import { useThemes } from "@/theme/use-color-scheme.web";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,12 +43,13 @@ export default function EmailScreen() {
           />
 
           {/* Card */}
-          <View
+          <Card
             style={{
               padding: 16,
               borderRadius: theme.shape.radiusLG,
               borderWidth: 1,
               borderColor: theme.colors.outlineVariant,
+              boxShadow: "none",
             }}
           >
             <Text
@@ -101,32 +104,10 @@ export default function EmailScreen() {
             >
               Continue
             </Button>
-          </View>
+          </Card>
 
           {/* Disclaimer */}
-          <Text
-            variant="bodySmall"
-            style={{
-              textAlign: "center",
-              marginTop: 30,
-              opacity: 0.6,
-            }}
-          >
-            I agree to{" "}
-            <Text
-              style={{ color: theme.colors.primary, fontWeight: "500" }}
-              onPress={() => {}}
-            >
-              Terms of Use
-            </Text>{" "}
-            &{" "}
-            <Text
-              style={{ color: theme.colors.primary, fontWeight: "500" }}
-              onPress={() => {}}
-            >
-              Privacy Policy
-            </Text>
-          </Text>
+          <Disclaimer style={{ marginTop: 30 }} />
         </KeyboardAvoidingView>
       </View>
     </AuthWrapper>
