@@ -23,6 +23,7 @@ export const Card: React.FC<Props> = ({
       style={{
         padding: 16,
         borderRadius: theme.shape.radiusLG,
+        backgroundColor: theme.colors.surface,
         borderWidth: 1,
         borderColor: theme.colors.outlineVariant,
         boxShadow: "none",
@@ -32,7 +33,11 @@ export const Card: React.FC<Props> = ({
       {title && (
         <Text
           variant="headlineMedium"
-          style={{ marginBottom: 4, opacity: 0.8 }}
+          style={{
+            marginBottom: 4,
+            opacity: 0.8,
+            color: theme.colors.onSurface,
+          }}
         >
           {title}
         </Text>
