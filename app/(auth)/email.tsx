@@ -75,6 +75,11 @@ export default function EmailScreen() {
                   error={!!errors.email}
                   outlineStyle={{ borderRadius: 12 }}
                   left={<TextInput.Icon icon="email-outline" />}
+                  returnKeyType="done"
+                  blurOnSubmit
+                  onSubmitEditing={handleSubmit(onSubmit)}
+                  accessibilityLabel="Email address"
+                  accessibilityHint="Enter your email address, then press the Continue button or the Enter key to submit"
                 />
               )}
             />
@@ -101,6 +106,9 @@ export default function EmailScreen() {
                 justifyContent: "center",
               }}
               labelStyle={{ fontWeight: "600" }}
+              accessibilityRole="button"
+              accessibilityLabel="Continue"
+              accessibilityHint="Submits your email address and moves to the OTP verification step"
             >
               Continue
             </Button>
