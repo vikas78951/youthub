@@ -4,6 +4,7 @@ import { Card } from "@/shared/ui/Card";
 import { Disclaimer } from "@/shared/ui/Disclaimer";
 import GoBackIconButton from "@/shared/ui/GoBackIconButton";
 import Header from "@/shared/ui/Header";
+import { APP_CONFIG } from "@/constants/constants";
 import { useThemes } from "@/theme/use-color-scheme.web";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
@@ -19,15 +20,13 @@ import {
 import { Button, Text } from "react-native-paper";
 import { otpSchema } from "../../features/auth/schema";
 
-const CELL_COUNT = 4;
-
 export default function OTPScreen() {
   const router = useRouter();
   const theme = useThemes();
   const [value, setValue] = useState("");
-  const [timer, setTimer] = useState(30);
+  const [timer, setTimer] = useState(APP_CONFIG.otp.timerSeconds);
 
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({ value, cellCount: APP_CONFIG.otp.cellCount });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -55,6 +54,12 @@ export default function OTPScreen() {
     router.push("/select-role");
   };
 
+  const handleResendOtp = () => {
+    // Reset OTP value and restart timer; hook your API call here.
+    setValue("");
+    setTimer(APP_CONFIG.otp.timerSeconds);
+  };
+
   return (
     <AuthWrapper>
       <GoBackIconButton />
@@ -64,7 +69,7 @@ export default function OTPScreen() {
           {/* Main Content */}
           <Header
             style={{
-              marginBottom: 40,
+              marginBottom: 20,
             }}
             title="Login to your account."
             description="Verify you account"
@@ -77,7 +82,7 @@ export default function OTPScreen() {
               {...props}
               value={value}
               onChangeText={setValue}
-              cellCount={CELL_COUNT}
+              cellCount={APP_CONFIG.otp.cellCount}
               keyboardType="number-pad"
               textContentType="oneTimeCode"
               rootStyle={{
@@ -103,7 +108,9 @@ export default function OTPScreen() {
                     backgroundColor: theme.colors.surface,
                   }}
                   accessible
-                  accessibilityLabel={`Digit ${index + 1} of ${CELL_COUNT}`}
+                  accessibilityLabel={`Digit ${
+                    index + 1
+                  } of ${APP_CONFIG.otp.cellCount}`}
                 >
                   <Text
                     style={{
@@ -129,16 +136,28 @@ export default function OTPScreen() {
               </Text>
             )}
 
-            <Text
-              style={{
-                marginTop: 16,
-                opacity: 0.6,
-                textAlign: "center",
-              }}
-              accessibilityLabel={`Resend OTP in ${timer} seconds`}
-            >
-              Resend OTP in 00:{timer.toString().padStart(2, "0")}
-            </Text>
+            {timer > 0 ? (
+              <Text
+                style={{
+                  marginTop: 16,
+                  opacity: 0.6,
+                }}
+                accessibilityLabel={`You can resend the code in ${timer} seconds`}
+              >
+                Resend OTP in 00:{timer.toString().padStart(2, "0")}
+              </Text>
+            ) : (
+              <Button
+                mode="text"
+                onPress={handleResendOtp}
+                style={{ marginTop: 16 }}
+                accessibilityRole="button"
+                accessibilityLabel="Resend one-time password"
+                accessibilityHint="Sends a new verification code to your phone"
+              >
+                Resend OTP
+              </Button>
+            )}
 
             <Button
               mode="contained"

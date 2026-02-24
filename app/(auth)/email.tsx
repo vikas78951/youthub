@@ -36,7 +36,7 @@ export default function EmailScreen() {
 
           <Header
             style={{
-              marginBottom: 40,
+              marginBottom: 20,
             }}
             title="Login to your account."
             description="One Platform. Two Goals. Jobs & Talent."

@@ -11,7 +11,12 @@ const GoBackIconButton = () => {
       <Button
         icon="arrow-left"
         onPress={() => router.back()}
-        style={{ padding: 0, display: "flex", alignItems: "flex-start" }}
+        style={{
+          padding: 0,
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "center",
+        }}
         mode="text"
       >
         Go back
@@ -24,7 +29,6 @@ const GoBackIconButton = () => {
       icon="arrow-left"
       size={20}
       onPress={() => router.back()}
-      style={{ padding: 0, display: "flex", alignItems: "flex-start" }}
       mode="outlined"
     />
   );
