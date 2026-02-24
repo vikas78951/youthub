@@ -25,7 +25,7 @@ export const LightTheme: AppTheme = {
     tertiaryContainer: "#E9ECEF",
     onTertiaryContainer: "#2B2F33",
 
-    background: "#F4F6F8",
+    background: "#FFFFFF",
     onBackground: "#1A1C1E",
 
     surface: "#FFFFFF",

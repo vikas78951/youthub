@@ -26,10 +26,10 @@ const GoBackIconButton = () => {
 
   return (
     <IconButton
+      style={{ margin: 0, width: 24 }}
       icon="arrow-left"
-      size={20}
+      size={24}
       onPress={() => router.back()}
-      mode="outlined"
     />
   );
 };

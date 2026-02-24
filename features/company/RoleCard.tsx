@@ -1,4 +1,4 @@
-import { Card } from "@/shared/ui/Card";
+import { SlectionCard } from "@/shared/ui/Card";
 import { useThemes } from "@/theme/use-color-scheme.web";
 import React from "react";
 import { Image, Pressable, View } from "react-native";
@@ -38,16 +38,12 @@ export const RoleCard: React.FC<RoleCardProps> = ({
       accessibilityHint={`Select the ${title} role`}
       accessibilityState={{ selected }}
     >
-      <Card
+      <SlectionCard
         style={{
-          flex: 1,
-          borderColor: selected
-            ? theme.colors.primary
-            : theme.colors.outlineVariant,
           maxWidth: isMobile ? "100%" : 340,
           minWidth: isMobile ? "100%" : 280,
-          height: "100%",
         }}
+        selected={selected}
       >
         {/* Header */}
         <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
@@ -113,7 +109,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({
             </View>
           ))}
         </View>
-      </Card>
+      </SlectionCard>
     </Pressable>
   );
 };

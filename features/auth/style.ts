@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 420,
     display: "flex",
-    justifyContent: "center",
     marginHorizontal: "auto",
     flexShrink: 1,
   },

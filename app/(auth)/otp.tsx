@@ -1,10 +1,11 @@
+import { APP_CONFIG } from "@/constants/constants";
 import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import { styles } from "@/features/auth/style";
+import { useResponsive } from "@/hooks/useResponsive";
 import { Card } from "@/shared/ui/Card";
 import { Disclaimer } from "@/shared/ui/Disclaimer";
-import GoBackIconButton from "@/shared/ui/GoBackIconButton";
 import Header from "@/shared/ui/Header";
-import { APP_CONFIG } from "@/constants/constants";
+import { globalStyles } from "@/style/global";
 import { useThemes } from "@/theme/use-color-scheme.web";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
@@ -25,6 +26,7 @@ export default function OTPScreen() {
   const theme = useThemes();
   const [value, setValue] = useState("");
   const [timer, setTimer] = useState(APP_CONFIG.otp.timerSeconds);
+  const { isDesktop } = useResponsive();
 
   const ref = useBlurOnFulfill({ value, cellCount: APP_CONFIG.otp.cellCount });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -42,7 +44,7 @@ export default function OTPScreen() {
 
   useEffect(() => {
     setFormValue("otp", value);
-  }, [value]);
+  }, [setFormValue, value]);
 
   useEffect(() => {
     if (timer <= 0) return;
@@ -62,126 +64,129 @@ export default function OTPScreen() {
 
   return (
     <AuthWrapper>
-      <GoBackIconButton />
-
-      <View style={styles.form}>
-        <KeyboardAvoidingView>
-          {/* Main Content */}
-          <Header
+      <View style={[styles.form, { flex: 1 }]}>
+        {/* Top: heading + form */}
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <View
             style={{
-              marginBottom: 20,
+              flex: 1,
+              justifyContent: isDesktop ? "center" : "flex-start",
             }}
-            title="Login to your account."
-            description="Verify you account"
-          />
-          {/* Card */}
-          <Card description="Enter the 4-digit code sent to your phone">
-            {/* OTP FIELD */}
-            <CodeField
-              ref={ref}
-              {...props}
-              value={value}
-              onChangeText={setValue}
-              cellCount={APP_CONFIG.otp.cellCount}
-              keyboardType="number-pad"
-              textContentType="oneTimeCode"
-              rootStyle={{
-                justifyContent: "space-between",
+          >
+            {/* Header */}
+            <Header
+              style={{
+                marginBottom: 30,
               }}
-              accessible
-              accessibilityLabel="One-time password input"
-              accessibilityHint="Enter the 4-digit code you received"
-              renderCell={({ index, symbol, isFocused }) => (
-                <View
-                  key={index}
-                  onLayout={getCellOnLayoutHandler(index)}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: theme.roundness,
-                    borderWidth: 1.5,
-                    borderColor: isFocused
-                      ? theme.colors.primary
-                      : theme.colors.outline,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: theme.colors.surface,
-                  }}
-                  accessible
-                  accessibilityLabel={`Digit ${
-                    index + 1
-                  } of ${APP_CONFIG.otp.cellCount}`}
-                >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "600",
-                    }}
-                  >
-                    {symbol || (isFocused ? <Cursor /> : null)}
-                  </Text>
-                </View>
-              )}
+              title="Verify you email"
+              description="Enter the 4-digit code sent to your email"
+              showBackButton
             />
 
-            {errors.otp && (
-              <Text
-                style={{
-                  color: theme.colors.error,
-                  fontSize: 12,
-                  marginTop: 8,
+            {/* Card */}
+            <Card>
+              {/* OTP FIELD */}
+              <CodeField
+                ref={ref}
+                {...props}
+                value={value}
+                onChangeText={setValue}
+                cellCount={APP_CONFIG.otp.cellCount}
+                keyboardType="number-pad"
+                textContentType="oneTimeCode"
+                rootStyle={{
+                  justifyContent: "space-between",
                 }}
-              >
-                {errors.otp.message}
-              </Text>
-            )}
+                accessible
+                accessibilityLabel="One-time password input"
+                accessibilityHint="Enter the 4-digit code you received"
+                renderCell={({ index, symbol, isFocused }) => (
+                  <View
+                    key={index}
+                    onLayout={getCellOnLayoutHandler(index)}
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: theme.roundness,
+                      borderWidth: 1.5,
+                      borderColor: isFocused
+                        ? theme.colors.primary
+                        : theme.colors.outline,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: theme.colors.surface,
+                    }}
+                    accessible
+                    accessibilityLabel={`Digit ${
+                      index + 1
+                    } of ${APP_CONFIG.otp.cellCount}`}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        fontWeight: "600",
+                      }}
+                    >
+                      {symbol || (isFocused ? <Cursor /> : null)}
+                    </Text>
+                  </View>
+                )}
+              />
 
-            {timer > 0 ? (
-              <Text
-                style={{
-                  marginTop: 16,
-                  opacity: 0.6,
-                }}
-                accessibilityLabel={`You can resend the code in ${timer} seconds`}
-              >
-                Resend OTP in 00:{timer.toString().padStart(2, "0")}
-              </Text>
-            ) : (
+              {errors.otp && (
+                <Text
+                  style={{
+                    color: theme.colors.error,
+                    fontSize: 12,
+                    marginTop: 8,
+                  }}
+                >
+                  {errors.otp.message}
+                </Text>
+              )}
+
+              {timer > 0 ? (
+                <Text
+                  style={{
+                    marginTop: 16,
+                    opacity: 0.6,
+                  }}
+                  accessibilityLabel={`You can resend the code in ${timer} seconds`}
+                >
+                  Resend OTP in 00:{timer.toString().padStart(2, "0")}
+                </Text>
+              ) : (
+                <Button
+                  mode="text"
+                  onPress={handleResendOtp}
+                  style={{ marginTop: 16 }}
+                  accessibilityRole="button"
+                  accessibilityLabel="Resend one-time password"
+                  accessibilityHint="Sends a new verification code to your phone"
+                >
+                  Resend OTP
+                </Button>
+              )}
+
               <Button
-                mode="text"
-                onPress={handleResendOtp}
-                style={{ marginTop: 16 }}
+                mode="contained"
+                onPress={handleSubmit(onSubmit)}
+                disabled={value.length !== 4}
+                style={{ ...globalStyles.primaryButton, marginTop: 24 }}
+                labelStyle={{ fontWeight: "600" }}
                 accessibilityRole="button"
-                accessibilityLabel="Resend one-time password"
-                accessibilityHint="Sends a new verification code to your phone"
+                accessibilityLabel="Verify"
+                accessibilityHint="Submits the one-time password and continues to role selection"
+                accessibilityState={{ disabled: value.length !== 4 }}
               >
-                Resend OTP
+                Verify
               </Button>
-            )}
-
-            <Button
-              mode="contained"
-              onPress={handleSubmit(onSubmit)}
-              disabled={value.length !== 4}
-              style={{
-                marginTop: 24,
-                borderRadius: theme.roundness,
-                height: 48,
-                justifyContent: "center",
-              }}
-              labelStyle={{ fontWeight: "600" }}
-              accessibilityRole="button"
-              accessibilityLabel="Verify"
-              accessibilityHint="Submits the one-time password and continues to role selection"
-              accessibilityState={{ disabled: value.length !== 4 }}
-            >
-              Verify
-            </Button>
-          </Card>
-
-          {/* Disclaimer */}
-          <Disclaimer style={{ marginTop: 30 }} />
+            </Card>
+          </View>
         </KeyboardAvoidingView>
+
+        {/* Bottom: disclaimer */}
+        <Disclaimer style={{ marginTop: 30 }} />
       </View>
     </AuthWrapper>
   );

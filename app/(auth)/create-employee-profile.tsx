@@ -1,9 +1,9 @@
 import AuthWrapper from "@/features/auth/components/AuthWrapper";
 import { styles } from "@/features/auth/style";
+import { useResponsive } from "@/hooks/useResponsive";
 import { Card } from "@/shared/ui/Card";
-import GoBackIconButton from "@/shared/ui/GoBackIconButton";
 import Header from "@/shared/ui/Header";
-import { useThemes } from "@/theme/use-color-scheme.web";
+import { globalStyles } from "@/style/global";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import React from "react";
@@ -13,8 +13,6 @@ import { Button, Text, TextInput } from "react-native-paper";
 import { createEmployeeProfileSchema } from "../../features/profile/schema";
 
 export default function EmployeeCreateProfile() {
-  const theme = useThemes();
-
   const {
     control,
     handleSubmit,
@@ -25,6 +23,7 @@ export default function EmployeeCreateProfile() {
       experience: "0",
     },
   });
+  const { isMobile } = useResponsive();
 
   const onSubmit = (data: any) => {
     router.push("/(employee)");
@@ -33,7 +32,6 @@ export default function EmployeeCreateProfile() {
 
   return (
     <AuthWrapper>
-      <GoBackIconButton />
       <ScrollView
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -41,139 +39,186 @@ export default function EmployeeCreateProfile() {
         <View
           style={{
             ...styles.form,
-            justifyContent: "flex-start",
-            marginTop: 20,
+            justifyContent: "space-between",
+            flex: 1,
+            maxWidth: isMobile ? 320 : "auto",
           }}
         >
-          <KeyboardAvoidingView>
-            {/* Main Content */}
-            <Header
+          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+            <View
               style={{
-                marginBottom: 20,
+                flex: 1,
+                justifyContent: "space-between",
               }}
-              title="Create your profile."
-            />
-            <Card>
-              {/* FULL NAME */}
-              <Text variant="labelLarge">Full Name *</Text>
-              <Controller
-                control={control}
-                name="fullName"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    mode="outlined"
-                    placeholder="Your full name"
-                    value={value}
-                    onChangeText={onChange}
-                    error={!!errors.fullName}
-                    style={{ marginTop: 6, height: 48 }}
-                    accessibilityLabel="Full Name"
-                    accessibilityHint="Enter your full name"
-                  />
-                )}
-              />
+            >
+              {/* Top: header + form card */}
+              <View>
+                <Header
+                  style={{
+                    marginBottom: 30,
+                  }}
+                  title="Create your profile."
+                  description="Add you basic details"
+                  showBackButton
+                />
+                <Card>
+                  <View
+                    style={{
+                      flexDirection: isMobile ? "column" : "row",
+                    }}
+                  >
+                    {/* Column 1 */}
+                    <View
+                      style={{
+                        flex: 1,
+                        marginRight: isMobile ? 0 : 12,
+                      }}
+                    >
+                      {/* FULL NAME */}
+                      <View style={{ marginBottom: 16 }}>
+                        <Text variant="labelLarge">Full Name *</Text>
+                        <Controller
+                          control={control}
+                          name="fullName"
+                          render={({ field: { onChange, value } }) => (
+                            <TextInput
+                              mode="outlined"
+                              placeholder="Your full name"
+                              value={value}
+                              onChangeText={onChange}
+                              error={!!errors.fullName}
+                              style={{ marginTop: 6, height: 48 }}
+                              accessibilityLabel="Full Name"
+                              accessibilityHint="Enter your full name"
+                            />
+                          )}
+                        />
+                      </View>
 
-              {/* CITY */}
-              <Text style={{ marginTop: 16 }}>City *</Text>
-              <Controller
-                control={control}
-                name="city"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    mode="outlined"
-                    placeholder="Delhi, Mumbai..."
-                    value={value}
-                    onChangeText={onChange}
-                    error={!!errors.city}
-                    style={{ marginTop: 6, height: 48 }}
-                    accessibilityLabel="City"
-                  />
-                )}
-              />
+                      {/* CITY */}
+                      <View style={{ marginBottom: 16 }}>
+                        <Text>City *</Text>
+                        <Controller
+                          control={control}
+                          name="city"
+                          render={({ field: { onChange, value } }) => (
+                            <TextInput
+                              mode="outlined"
+                              placeholder="Delhi, Mumbai..."
+                              value={value}
+                              onChangeText={onChange}
+                              error={!!errors.city}
+                              style={{ marginTop: 6, height: 48 }}
+                              accessibilityLabel="City"
+                            />
+                          )}
+                        />
+                      </View>
 
-              {/* JOB TITLE */}
-              <Text style={{ marginTop: 16 }}>Job Title *</Text>
-              <Controller
-                control={control}
-                name="jobTitle"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    mode="outlined"
-                    placeholder="Software Developer"
-                    value={value}
-                    onChangeText={onChange}
-                    error={!!errors.jobTitle}
-                    style={{ marginTop: 6, height: 48 }}
-                    accessibilityLabel="Job Title"
-                  />
-                )}
-              />
+                      {/* JOB TITLE */}
+                      <View style={{ marginBottom: 16 }}>
+                        <Text>Job Title *</Text>
+                        <Controller
+                          control={control}
+                          name="jobTitle"
+                          render={({ field: { onChange, value } }) => (
+                            <TextInput
+                              mode="outlined"
+                              placeholder="Software Developer"
+                              value={value}
+                              onChangeText={onChange}
+                              error={!!errors.jobTitle}
+                              style={{ marginTop: 6, height: 48 }}
+                              accessibilityLabel="Job Title"
+                            />
+                          )}
+                        />
+                      </View>
+                    </View>
 
-              {/* EXPERIENCE */}
-              <Text style={{ marginTop: 16 }}>Years of Experience *</Text>
-              <Controller
-                control={control}
-                name="experience"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    mode="outlined"
-                    keyboardType="numeric"
-                    placeholder="2"
-                    value={value ?? ""}
-                    onChangeText={onChange}
-                    error={!!errors.experience}
-                    style={{ marginTop: 6, height: 48 }}
-                    accessibilityLabel="Years of Experience"
-                  />
-                )}
-              />
+                    {/* Column 2 */}
+                    <View
+                      style={{
+                        flex: 1,
+                        marginLeft: isMobile ? 0 : 12,
+                      }}
+                    >
+                      {/* EXPERIENCE */}
+                      <View style={{ marginBottom: 16 }}>
+                        <Text>Years of Experience *</Text>
+                        <Controller
+                          control={control}
+                          name="experience"
+                          render={({ field: { onChange, value } }) => (
+                            <TextInput
+                              mode="outlined"
+                              keyboardType="numeric"
+                              placeholder="2"
+                              value={value ?? ""}
+                              onChangeText={onChange}
+                              error={!!errors.experience}
+                              style={{ marginTop: 6, height: 48 }}
+                              accessibilityLabel="Years of Experience"
+                            />
+                          )}
+                        />
+                      </View>
 
-              {/* SKILLS */}
-              <Text style={{ marginTop: 16 }}>Skills *</Text>
-              <Controller
-                control={control}
-                name="skills"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    mode="outlined"
-                    placeholder="React, Node, SQL"
-                    value={value}
-                    onChangeText={onChange}
-                    error={!!errors.skills}
-                    style={{ marginTop: 6, height: 48 }}
-                    accessibilityLabel="Skills"
-                  />
-                )}
-              />
+                      {/* SKILLS */}
+                      <View style={{ marginBottom: 16 }}>
+                        <Text>Skills *</Text>
+                        <Controller
+                          control={control}
+                          name="skills"
+                          render={({ field: { onChange, value } }) => (
+                            <TextInput
+                              mode="outlined"
+                              placeholder="React, Node, SQL"
+                              value={value}
+                              onChangeText={onChange}
+                              error={!!errors.skills}
+                              style={{ marginTop: 6, height: 48 }}
+                              accessibilityLabel="Skills"
+                            />
+                          )}
+                        />
+                      </View>
 
-              {/* EXPECTED SALARY */}
-              <Text style={{ marginTop: 16 }}>Expected Salary (Optional)</Text>
-              <Controller
-                control={control}
-                name="expectedSalary"
-                render={({ field: { onChange, value } }) => (
-                  <TextInput
-                    mode="outlined"
-                    keyboardType="numeric"
-                    placeholder="500000"
-                    value={value ? String(value) : ""}
-                    onChangeText={(text) =>
-                      onChange(text ? Number(text) : undefined)
-                    }
-                    style={{ marginTop: 6, height: 48 }}
-                    accessibilityLabel="Expected Salary"
-                  />
-                )}
-              />
-
+                      {/* EXPECTED SALARY */}
+                      <View style={{ marginBottom: 16 }}>
+                        <Text>Expected Salary (Optional)</Text>
+                        <Controller
+                          control={control}
+                          name="expectedSalary"
+                          render={({ field: { onChange, value } }) => (
+                            <TextInput
+                              mode="outlined"
+                              keyboardType="numeric"
+                              placeholder="500000"
+                              value={value ? String(value) : ""}
+                              onChangeText={(text) =>
+                                onChange(text ? Number(text) : undefined)
+                              }
+                              style={{ marginTop: 6, height: 48 }}
+                              accessibilityLabel="Expected Salary"
+                            />
+                          )}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                </Card>
+              </View>
+              {/* Bottom: submit button */}
               <Button
                 mode="contained"
                 onPress={handleSubmit(onSubmit)}
                 style={{
+                  ...globalStyles.primaryButton,
                   marginTop: 24,
-                  borderRadius: 12,
-                  height: 48,
-                  justifyContent: "center",
+                  width: "100%",
+                  maxWidth: 320,
+                  alignSelf: "flex-end",
                 }}
                 labelStyle={{ fontWeight: "600" }}
                 accessibilityRole="button"
@@ -181,7 +226,7 @@ export default function EmployeeCreateProfile() {
               >
                 Save & Continue
               </Button>
-            </Card>
+            </View>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
