@@ -25,3 +25,9 @@ src/
   constants/
   theme/
 ```
+
+<!-- Build Android -->
+
+npx expo prebuild
+cd android
+./gradlew assembleRelease
